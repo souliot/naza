@@ -1,5 +1,5 @@
 // Copyright 2019, Chef.  All rights reserved.
-// https://github.com/q191201771/naza
+// https://github.com/souliot/naza
 //
 // Use of this source code is governed by a MIT-style license
 // that can be found in the License file.
@@ -17,11 +17,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/q191201771/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/nazalog"
 
-	"github.com/q191201771/naza/pkg/fake"
+	"github.com/souliot/naza/pkg/fake"
 
-	"github.com/q191201771/naza/pkg/assert"
+	"github.com/souliot/naza/pkg/assert"
 )
 
 func TestLogger(t *testing.T) {

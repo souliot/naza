@@ -1,5 +1,5 @@
 // Copyright 2020, Chef.  All rights reserved.
-// https://github.com/q191201771/naza
+// https://github.com/souliot/naza
 //
 // Use of this source code is governed by a MIT-style license
 // that can be found in the License file.
@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/q191201771/naza/pkg/assert"
+	"github.com/souliot/naza/pkg/assert"
 
-	"github.com/q191201771/naza/pkg/fake"
+	"github.com/souliot/naza/pkg/fake"
 )
 
 func TestWithFakeTimeNow(t *testing.T) {
