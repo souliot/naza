@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 	"github.com/souliot/naza/pkg/ratelimit"
 )
 
@@ -29,7 +29,7 @@ func TestLeakyBucket(t *testing.T) {
 			for k := 0; k < 16; k++ {
 				err := lb.TryAquire()
 				if err == nil {
-					nazalog.Debugf("TryAquire succ. goroutine=%d, index=%d", j, k)
+					log.DefaultBeeLogger.Debug("TryAquire succ. goroutine=%d, index=%d", j, k)
 				} else {
 					time.Sleep(time.Duration(lb.MaybeAvailableIntervalMSec()) * time.Millisecond)
 				}
@@ -58,7 +58,7 @@ func TestLeakyBucket(t *testing.T) {
 		go func(j int) {
 			for k := 0; k < 4; k++ {
 				lb2.WaitUntilAquire()
-				nazalog.Debugf("< lb.WaitUntilAquire. goroutine=%d, index=%d", j, k)
+				log.DefaultBeeLogger.Debug("< lb.WaitUntilAquire. goroutine=%d, index=%d", j, k)
 			}
 		}(i)
 	}
@@ -91,7 +91,7 @@ func TestTokenBucket(t *testing.T) {
 		go func(j int) {
 			for k := 0; k < 4; k++ {
 				tb.WaitUntilAquire()
-				nazalog.Debugf("< tb.WaitUntilAquire. goroutine=%d, index=%d", j, k)
+				log.DefaultBeeLogger.Debug("< tb.WaitUntilAquire. goroutine=%d, index=%d", j, k)
 				time.Sleep(100 * time.Millisecond)
 			}
 		}(i)

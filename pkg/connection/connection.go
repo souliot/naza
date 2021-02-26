@@ -24,7 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 var (
@@ -143,7 +143,7 @@ func New(conn net.Conn, modOptions ...ModOption) Connection {
 		go c.runWriteLoop()
 	}
 
-	nazalog.Debugf("naza connection New. net.Conn=%p, naza.Connection=%p", conn, c)
+	log.DefaultBeeLogger.Debug("naza connection New. net.Conn=%p, naza.Connection=%p", conn, c)
 	return c
 }
 
@@ -298,7 +298,7 @@ func (c *connection) Flush() error {
 }
 
 func (c *connection) Close() error {
-	nazalog.Debugf("naza connection Close. conn=%p", c)
+	log.DefaultBeeLogger.Debug("naza connection Close. conn=%p", c)
 	c.close(nil)
 	return nil
 }
@@ -365,7 +365,7 @@ func (c *connection) runWriteLoop() {
 	for {
 		select {
 		case <-c.exitChan:
-			nazalog.Debugf("naza connection recv exitChan and exit write loop. conn=%p", c)
+			log.DefaultBeeLogger.Debug("naza connection recv exitChan and exit write loop. conn=%p", c)
 			return
 		case msg := <-c.wChan:
 			switch msg.t {
@@ -403,7 +403,7 @@ func (c *connection) flush() error {
 }
 
 func (c *connection) close(err error) {
-	nazalog.Debugf("naza connection close. err=%v, conn=%p", err, c)
+	log.DefaultBeeLogger.Debug("naza connection close. err=%v, conn=%p", err, c)
 	c.closeOnce.Do(func() {
 		atomic.StoreUint32(&c.closedFlag, 1)
 		if c.option.WriteChanSize > 0 {

@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 
 	"github.com/souliot/naza/pkg/defertaskthread"
 )
@@ -22,7 +22,7 @@ func TestDeferTaskThread(t *testing.T) {
 	for i := 0; i < 300; i += 50 {
 		d.Go(i, func(param ...interface{}) {
 			ii := param[0].(int)
-			nazalog.Debugf("running %d", ii)
+			log.DefaultBeeLogger.Debug("running %d", ii)
 		}, i)
 	}
 	time.Sleep(300 * time.Millisecond)

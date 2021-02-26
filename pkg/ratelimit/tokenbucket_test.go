@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 	"github.com/souliot/naza/pkg/ratelimit"
 )
 
@@ -65,7 +65,7 @@ func TestTokenBucket_Dispose(t *testing.T) {
 
 func TestTokenBucket_panic(t *testing.T) {
 	defer func() {
-		nazalog.Debug(recover())
+		log.DefaultBeeLogger.Debug(recover())
 	}()
 	tb := ratelimit.NewTokenBucket(1, 1, 1)
 	tb.TryAquireWithNum(100)

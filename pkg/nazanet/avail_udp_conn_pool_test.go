@@ -14,7 +14,7 @@ import (
 
 	"github.com/souliot/naza/pkg/assert"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 
 	"github.com/souliot/naza/pkg/nazanet"
 )
@@ -27,7 +27,7 @@ func TestAvailUDPConnPool_Acquire(t *testing.T) {
 	// 循环次数大于端口范围，测试后面的获取是否返回错误
 	for i := 0; i < 10; i++ {
 		conn, port, err := aucp.Acquire()
-		nazalog.Debugf("%d: %p, %d, %v", i, conn, port, err)
+		log.DefaultBeeLogger.Debug("%d: %p, %d, %v", i, conn, port, err)
 
 		// 关闭一次，看下次是否能复用
 		if !closedOnlyOnceFlag {
@@ -56,7 +56,7 @@ func TestAvailUDPConnPool_Acquire2(t *testing.T) {
 	// 循环次数大于端口范围，测试后面的获取是否返回错误
 	for i := 0; i < 10; i++ {
 		conn1, port1, conn2, port2, err := aucp.Acquire2()
-		nazalog.Debugf("%d: %p, %d, %p, %d, %v", i, conn1, port1, conn2, port2, err)
+		log.DefaultBeeLogger.Debug("%d: %p, %d, %p, %d, %v", i, conn1, port1, conn2, port2, err)
 
 		// 关闭一次，看下次是否能复用
 		if !closedOnlyOnceFlag {
@@ -71,5 +71,5 @@ func TestAvailUDPConnPool_Acquire2(t *testing.T) {
 
 func TestAvailUDPConnPool_Peek(t *testing.T) {
 	aucp := nazanet.NewAvailUDPConnPool(8000, 8005)
-	nazalog.Debug(aucp.Peek())
+	log.DefaultBeeLogger.Debug(aucp.Peek())
 }

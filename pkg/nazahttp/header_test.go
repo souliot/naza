@@ -16,7 +16,7 @@ import (
 
 	"github.com/souliot/naza/pkg/assert"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 
 	"github.com/souliot/naza/pkg/nazahttp"
 )
@@ -38,12 +38,12 @@ func TestHeader(t *testing.T) {
 		fl, hs, err := nazahttp.ReadHTTPHeader(r)
 		assert.Equal(t, nil, err)
 		assert.Equal(t, true, len(hs) > 0)
-		nazalog.Debugf("first line:%s", fl)
-		nazalog.Debugf("header fields:%+v", hs)
+		log.DefaultBeeLogger.Debug("first line:%s", fl)
+		log.DefaultBeeLogger.Debug("header fields:%+v", hs)
 
 		m, u, v, err := nazahttp.ParseHTTPRequestLine(fl)
 		assert.Equal(t, nil, err)
-		nazalog.Debugf("method:%s, uri:%s, version:%s", m, u, v)
+		log.DefaultBeeLogger.Debug("method:%s, uri:%s, version:%s", m, u, v)
 		assert.Equal(t, "GET", m)
 		assert.Equal(t, "/test", u)
 		assert.Equal(t, "HTTP/1.1", v)

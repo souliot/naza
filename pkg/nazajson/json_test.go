@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 var raw = []byte(`
@@ -123,5 +123,5 @@ func BenchmarkExist(b *testing.B) {
 		exist = j.Exist(".")
 		exist = j.Exist("..")
 	}
-	nazalog.Debug(exist)
+	log.DefaultBeeLogger.Debug(exist)
 }

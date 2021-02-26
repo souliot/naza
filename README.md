@@ -30,7 +30,7 @@ Go语言基础库
 ```
 pkg/                    ...... 源码包
     |-- bininfo/        ...... 将编译时源码的git版本信息（当前commit log的sha值和commit message），编译时间，Go版本，平台打入程序中
-    |-- nazalog/        ...... 日志库
+    |-- log/        ...... 日志库
     |-- assert/         ...... 提供了单元测试时的断言功能，减少一些模板代码
     |-- nazaerrors/     ...... error相关
     |-- fake/           ...... 实现一些常用的接口，hook一些不方便测试的代码

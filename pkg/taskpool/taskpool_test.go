@@ -17,7 +17,7 @@ import (
 	"github.com/souliot/naza/pkg/taskpool"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 var (
@@ -26,7 +26,7 @@ var (
 )
 
 func BenchmarkOriginGo(b *testing.B) {
-	nazalog.Debug("> BenchmarkOriginGo")
+	log.DefaultBeeLogger.Debug("> BenchmarkOriginGo")
 	var wg sync.WaitGroup
 	for j := 0; j < 1; j++ {
 		wg.Add(taskNum)
@@ -38,11 +38,11 @@ func BenchmarkOriginGo(b *testing.B) {
 		}
 		wg.Wait()
 	}
-	nazalog.Debug("< BenchmarkOriginGo")
+	log.DefaultBeeLogger.Debug("< BenchmarkOriginGo")
 }
 
 func BenchmarkTaskPool(b *testing.B) {
-	nazalog.Debug("> BenchmarkTaskPool")
+	log.DefaultBeeLogger.Debug("> BenchmarkTaskPool")
 	var wg sync.WaitGroup
 	p, _ := taskpool.NewPool(func(option *taskpool.Option) {
 		option.InitWorkerNum = initWorkerNum
@@ -60,7 +60,7 @@ func BenchmarkTaskPool(b *testing.B) {
 		}
 		wg.Wait()
 	}
-	nazalog.Debug("< BenchmarkTaskPool")
+	log.DefaultBeeLogger.Debug("< BenchmarkTaskPool")
 }
 
 func TestTaskPool(t *testing.T) {
@@ -71,14 +71,14 @@ func TestTaskPool(t *testing.T) {
 
 	go func() {
 		//for {
-		nazalog.Debugf("timer, worker num. status=%+v", p.GetCurrentStatus())
+		log.DefaultBeeLogger.Debug("timer, worker num. status=%+v", p.GetCurrentStatus())
 		time.Sleep(10 * time.Millisecond)
 		//}
 	}()
 
 	n := 1000
 	wg.Add(n)
-	nazalog.Debug("start.")
+	log.DefaultBeeLogger.Debug("start.")
 	for i := 0; i < n; i++ {
 		p.Go(func(param ...interface{}) {
 			time.Sleep(10 * time.Millisecond)
@@ -86,9 +86,9 @@ func TestTaskPool(t *testing.T) {
 		})
 	}
 	wg.Wait()
-	nazalog.Debugf("done, worker num. status=%+v", p.GetCurrentStatus()) // 此时还有个别busy也是正常的，因为只是业务方的任务代码执行完了，可能还没回收到idle队列中
+	log.DefaultBeeLogger.Debug("done, worker num. status=%+v", p.GetCurrentStatus()) // 此时还有个别busy也是正常的，因为只是业务方的任务代码执行完了，可能还没回收到idle队列中
 	p.KillIdleWorkers()
-	nazalog.Debugf("killed, worker num. status=%+v", p.GetCurrentStatus())
+	log.DefaultBeeLogger.Debug("killed, worker num. status=%+v", p.GetCurrentStatus())
 
 	time.Sleep(100 * time.Millisecond)
 
@@ -100,7 +100,7 @@ func TestTaskPool(t *testing.T) {
 		})
 	}
 	wg.Wait()
-	nazalog.Debugf("done, worker num. status=%+v", p.GetCurrentStatus())
+	log.DefaultBeeLogger.Debug("done, worker num. status=%+v", p.GetCurrentStatus())
 }
 
 func TestMaxWorker(t *testing.T) {
@@ -111,7 +111,7 @@ func TestMaxWorker(t *testing.T) {
 
 	go func() {
 		for i := 0; i < 5; i++ {
-			nazalog.Debugf("timer. status=%+v", p.GetCurrentStatus())
+			log.DefaultBeeLogger.Debug("timer. status=%+v", p.GetCurrentStatus())
 			time.Sleep(100 * time.Millisecond)
 		}
 	}()
@@ -120,7 +120,7 @@ func TestMaxWorker(t *testing.T) {
 	var sum int32
 	n := 1000
 	wg.Add(n)
-	nazalog.Debugf("start.")
+	log.DefaultBeeLogger.Debug("start.")
 	for i := 0; i < n; i++ {
 		p.Go(func(param ...interface{}) {
 			a := param[0].(int)
@@ -132,7 +132,7 @@ func TestMaxWorker(t *testing.T) {
 		}, i, i)
 	}
 	wg.Wait()
-	nazalog.Debugf("end. sum=%d", sum)
+	log.DefaultBeeLogger.Debug("end. sum=%d", sum)
 }
 
 func TestGlobal(t *testing.T) {

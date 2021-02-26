@@ -16,9 +16,9 @@ import (
 	"time"
 
 	"github.com/souliot/naza/pkg/connection"
+	"github.com/souliot/naza/pkg/log"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
 )
 
 // TODO chef: 补充单元测试
@@ -43,7 +43,7 @@ func TestWriteTimeout(t *testing.T) {
 	b := make([]byte, 128*1024)
 	for {
 		n, err := c.Write(b)
-		nazalog.Infof("%d %+v", n, err)
+		log.DefaultBeeLogger.Info("%d %+v", n, err)
 		if err != nil {
 			break
 		}
@@ -71,14 +71,14 @@ func TestWrite(t *testing.T) {
 			b := make([]byte, rand.Intn(4096))
 			n, err := srvConn.Write(b)
 			if err == nil {
-				nazalog.Debugf("sent. i=%d, n=%d", i, n)
+				log.DefaultBeeLogger.Debug("sent. i=%d, n=%d", i, n)
 			}
 			assert.Equal(t, nil, err)
 			atomic.AddUint32(&sentN, uint32(n))
 		}
 		err = srvConn.Flush()
 		assert.Equal(t, nil, err)
-		nazalog.Debugf("total sent:%d", sentN)
+		log.DefaultBeeLogger.Debug("total sent:%d", sentN)
 		atomic.StoreUint32(&sentDone, 1)
 		srvConn.Close()
 	}()
@@ -90,7 +90,7 @@ func TestWrite(t *testing.T) {
 	for {
 		n, _ := conn.Read(b)
 		readN += uint32(n)
-		nazalog.Debugf("total read:%d", readN)
+		log.DefaultBeeLogger.Debug("total read:%d", readN)
 		if atomic.LoadUint32(&sentDone) == 1 && atomic.LoadUint32(&sentN) == readN {
 			break
 		}

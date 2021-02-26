@@ -15,7 +15,7 @@ import (
 	"testing"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 func TestConsistentHash(t *testing.T) {
@@ -48,7 +48,7 @@ func TestConsistentHash(t *testing.T) {
 		assert.Equal(t, nil, err)
 		counts[node]++
 	}
-	nazalog.Debugf("%+v", counts)
+	log.DefaultBeeLogger.Debug("%+v", counts)
 }
 
 func TestConsistentHash_Nodes(t *testing.T) {
@@ -63,14 +63,14 @@ func TestConsistentHash_Nodes(t *testing.T) {
 	j := 1024 // 1
 	k := 1024 // 16384
 	for i := j; i <= k; i = i << 1 {
-		nazalog.Debugf("-----%d-----", i)
+		log.DefaultBeeLogger.Debug("-----%d-----", i)
 		ch := New(i)
 		ch.Add(nodesGolden...)
 		nodes := ch.Nodes()
 		count := uint64(0)
 		for k, v := range nodes {
 			count += uint64(v)
-			nazalog.Debugf("%s: %+v", k, float32(v)/float32(math.MaxUint32+1))
+			log.DefaultBeeLogger.Debug("%s: %+v", k, float32(v)/float32(math.MaxUint32+1))
 		}
 		assert.Equal(t, uint64(math.MaxUint32+1), count)
 	}

@@ -16,7 +16,7 @@ import (
 	"testing"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 var filenameToContent map[string][]byte
@@ -56,7 +56,7 @@ func prepareTestFile() (string, error) {
 	if root[len(root)-1] != '/' {
 		root = root + "/"
 	}
-	nazalog.Debugf(root)
+	log.DefaultBeeLogger.Debug(root)
 
 	if err = os.Mkdir(filepath.Join(root, "dir1"), 0755); err != nil {
 		return "", err
@@ -89,7 +89,7 @@ func testWalk(t *testing.T, recursive bool, suffix string) {
 	defer os.RemoveAll(root)
 
 	err2 := Walk(root, recursive, suffix, func(path string, info os.FileInfo, content []byte, err error) []byte {
-		nazalog.Debugf("%+v %+v %s", path, info.Name(), string(content))
+		log.DefaultBeeLogger.Debug("%+v %+v %s", path, info.Name(), string(content))
 
 		v := filenameToContent[path]
 		assert.Equal(t, v, content)
@@ -124,7 +124,7 @@ func TestAddContent(t *testing.T) {
 
 	err2 := Walk(root, true, ".txt", func(path string, info os.FileInfo, content []byte, err error) []byte {
 		lines := bytes.Split(content, []byte{'\n'})
-		nazalog.Debugf("%+v %d", path, len(lines))
+		log.DefaultBeeLogger.Debug("%+v %d", path, len(lines))
 
 		v := filenameToContent[path]
 		assert.Equal(t, v, content)
@@ -135,7 +135,7 @@ func TestAddContent(t *testing.T) {
 	assert.Equal(t, nil, err2)
 
 	err2 = Walk(root, true, "", func(path string, info os.FileInfo, content []byte, err error) []byte {
-		nazalog.Debugf("%+v %+v %s", path, info.Name(), string(content))
+		log.DefaultBeeLogger.Debug("%+v %+v %s", path, info.Name(), string(content))
 		return nil
 	})
 	assert.Equal(t, nil, err2)

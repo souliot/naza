@@ -17,14 +17,14 @@ import (
 
 	"github.com/souliot/naza/pkg/assert"
 
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 )
 
 func TestWrap(t *testing.T) {
 	err := Wrap(io.EOF)
-	nazalog.Debugf("%+v", err)
+	log.DefaultBeeLogger.Debug("%+v", err)
 	assert.Equal(t, true, errors.Is(err, io.EOF))
 	err = Wrap(err)
-	nazalog.Debugf("%+v", err)
+	log.DefaultBeeLogger.Debug("%+v", err)
 	assert.Equal(t, true, errors.Is(err, io.EOF))
 }

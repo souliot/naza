@@ -13,7 +13,7 @@ import (
 	"testing"
 
 	"github.com/souliot/naza/pkg/assert"
-	"github.com/souliot/naza/pkg/nazalog"
+	"github.com/souliot/naza/pkg/log"
 	"github.com/souliot/naza/pkg/snowflake"
 )
 
@@ -22,10 +22,10 @@ func TestNew(t *testing.T) {
 	assert.Equal(t, nil, err)
 	id, err := n.Gen()
 	assert.Equal(t, nil, err)
-	nazalog.Debug(id)
+	log.DefaultBeeLogger.Debug(id)
 	id, err = n.Gen()
 	assert.Equal(t, nil, err)
-	nazalog.Debug(id)
+	log.DefaultBeeLogger.Debug(id)
 }
 
 func TestNegative(t *testing.T) {
@@ -88,7 +88,7 @@ func TestErrInitial(t *testing.T) {
 	if n != nil {
 		id, err = n.Gen()
 		assert.Equal(t, nil, err)
-		nazalog.Debug(id)
+		log.DefaultBeeLogger.Debug(id)
 	}
 }
 
@@ -107,7 +107,7 @@ func TestErrGen(t *testing.T) {
 	assert.Equal(t, nil, err)
 	id, err = n.Gen(1)
 	assert.Equal(t, snowflake.ErrGen, err)
-	nazalog.Debug(id)
+	log.DefaultBeeLogger.Debug(id)
 }
 
 func TestMT(t *testing.T) {
@@ -160,5 +160,5 @@ func BenchmarkNode_Gen(b *testing.B) {
 		id, _ := n.Gen()
 		dummy += id
 	}
-	nazalog.Debug(dummy)
+	log.DefaultBeeLogger.Debug(dummy)
 }
