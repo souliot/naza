@@ -23,7 +23,7 @@ type HTTPMsgCtx struct {
 	ReqMethodOrRespVersion string
 	ReqURIOrRespStatusCode string
 	ReqVersionOrRespReason string
-	Headers                map[string]string
+	Headers                map[string][]string
 	Body                   []byte
 }
 
@@ -31,7 +31,7 @@ type HTTPReqMsgCtx struct {
 	Method  string
 	URI     string
 	Version string
-	Headers map[string]string
+	Headers map[string][]string
 	Body    []byte
 }
 
@@ -39,7 +39,7 @@ type HTTPRespMsgCtx struct {
 	Version    string
 	StatusCode string
 	Reason     string
-	Headers    map[string]string
+	Headers    map[string][]string
 	Body       []byte
 }
 
@@ -85,7 +85,7 @@ func ReadHTTPMessage(r HTTPReader) (ctx HTTPMsgCtx, err error) {
 	if !ok {
 		return ctx, nil
 	}
-	cl, err := strconv.Atoi(contentLength)
+	cl, err := strconv.Atoi(contentLength[0])
 	if err != nil {
 		return ctx, err
 	}
@@ -93,4 +93,40 @@ func ReadHTTPMessage(r HTTPReader) (ctx HTTPMsgCtx, err error) {
 	_, err = io.ReadFull(r, ctx.Body)
 
 	return ctx, err
+}
+
+func (r *HTTPMsgCtx) GetHeader(v string) string {
+	if len(r.Headers[v]) > 0 {
+		return r.Headers[v][0]
+	} else {
+		return ""
+	}
+}
+
+func (r *HTTPMsgCtx) GetHeaderArr(v string) []string {
+	return r.Headers[v]
+}
+
+func (r *HTTPReqMsgCtx) GetHeader(v string) string {
+	if len(r.Headers[v]) > 0 {
+		return r.Headers[v][0]
+	} else {
+		return ""
+	}
+}
+
+func (r *HTTPReqMsgCtx) GetHeaderArr(v string) []string {
+	return r.Headers[v]
+}
+
+func (r *HTTPRespMsgCtx) GetHeader(v string) string {
+	if len(r.Headers[v]) > 0 {
+		return r.Headers[v][0]
+	} else {
+		return ""
+	}
+}
+
+func (r *HTTPRespMsgCtx) GetHeaderArr(v string) []string {
+	return r.Headers[v]
 }

@@ -18,8 +18,8 @@ type LineReader interface {
 
 // @return firstLine: request的request line或response的status line
 // @return headers: request header fileds的键值对
-func ReadHTTPHeader(r LineReader) (firstLine string, headers map[string]string, err error) {
-	headers = make(map[string]string)
+func ReadHTTPHeader(r LineReader) (firstLine string, headers map[string][]string, err error) {
+	headers = make(map[string][]string)
 
 	var line []byte
 	var isPrefix bool
@@ -51,7 +51,7 @@ func ReadHTTPHeader(r LineReader) (firstLine string, headers map[string]string, 
 			err = ErrHTTPHeader
 			return
 		}
-		headers[strings.Trim(l[0:pos], " ")] = strings.Trim(l[pos+1:], " ")
+		headers[strings.Trim(l[0:pos], " ")] = append(headers[strings.Trim(l[0:pos], " ")], strings.Trim(l[pos+1:], " "))
 	}
 	return
 }
