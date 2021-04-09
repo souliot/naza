@@ -1,7 +1,5 @@
 module github.com/souliot/naza
 
-go 1.13
+go 1.16
 
-replace github.com/souliot/siot-log v1.0.1 => D:\WorkSpace\github.com\siot-log
-
-require github.com/souliot/siot-log v1.0.1
+require github.com/souliot/siot-log v0.0.0-20210324090643-b8655a82c129
